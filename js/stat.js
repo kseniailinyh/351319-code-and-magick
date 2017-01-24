@@ -10,9 +10,9 @@ function drawRect(ctx, rect) {
   }
 }
 
-function getMaxTime(times) {
+function getMaxValue(times) {
   //находим в массиве максимальное значение
-  var max = -1;
+  var max = -Infinity;
   for (var i = 0; i < times.length; i++) {
     var time = times[i];
     if (time > max) {
@@ -29,7 +29,7 @@ function getRandomColor() {
   if(randomOpacity === 0) {
     return 'rgba(0,0,' + randomBlue + ',0.2)';
   } else {
-      return 'rgba(0,0,' + randomBlue + ',' + randomOpacity +')';
+    return 'rgba(0,0,' + randomBlue + ',' + randomOpacity +')';
   }
 }
 
@@ -71,7 +71,7 @@ window.renderStatistics = function (ctx, names, times) {
   var histoHeight = 150;
   var histoX = 120;
   var histoY = 100;
-  var step = histoHeight / getMaxTime(times);
+  var step = histoHeight / getMaxValue(times);
   var columnIndent = 90;
 
   //идем по массивам
@@ -100,9 +100,9 @@ window.renderStatistics = function (ctx, names, times) {
       column.fillColor = 'rgba(255, 0, 0, 1)';
       drawRect(ctx, column);
     } else {   //иначе у столбика случайный цвет
-        column.fillColor = getRandomColor();
-        drawRect(ctx, column);
-      }
+      column.fillColor = getRandomColor();
+      drawRect(ctx, column);
+    }
 
     //рисуем имя игрока
     ctx.fillStyle = '#000';
