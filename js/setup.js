@@ -3,24 +3,7 @@
 var setup = document.querySelector('.setup');
 var setupOpen = document.querySelector('.setup-open');
 var setupClose = setup.querySelector('.setup-close');
-
-// показываем и прячем окошко setup по клику на иконку и крестик соответственно
-toggleSetup(setupOpen, 'remove');
-toggleSetup(setupClose, 'add');
-
-// элементу навешиваем и убираем класс .invisible
-function toggleSetup(element, action) {
-  element.addEventListener('click', function () {
-    setup.classList[action]('invisible');
-  });
-}
-
 var nameField = setup.querySelector('.setup-user-name');
-
-// делаем поле с именем обязательным и ограничиваем длину
-nameField.required = true;
-nameField.maxLength = 50;
-
 var wizardCoat = setup.querySelector('#wizard-coat');
 var wizardEyes = setup.querySelector('#wizard-eyes');
 var fireballWrap = setup.querySelector('.setup-fireball-wrap');
@@ -43,6 +26,21 @@ var fireballColors = [
   '#5ce6c0',
   '#e848d5',
   '#e6e848'];
+
+// показываем и прячем окошко setup по клику на иконку и крестик соответственно
+toggleSetup(setupOpen, 'remove');
+toggleSetup(setupClose, 'add');
+
+// элементу навешиваем и убираем класс .invisible
+function toggleSetup(element, action) {
+  element.addEventListener('click', function () {
+    setup.classList[action]('invisible');
+  });
+}
+
+// делаем поле с именем обязательным и ограничиваем длину
+nameField.required = true;
+nameField.maxLength = 50;
 
 // навешиваем событие изменения цвета заливки по клику для мантии, глаз и фаербола
 changeColor(wizardCoat, 'fill', coatColors);
