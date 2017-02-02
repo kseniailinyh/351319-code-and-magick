@@ -7,6 +7,7 @@ var nameField = setup.querySelector('.setup-user-name');
 var wizardCoat = setup.querySelector('#wizard-coat');
 var wizardEyes = setup.querySelector('#wizard-eyes');
 var fireballWrap = setup.querySelector('.setup-fireball-wrap');
+var setupSubmit = setup.querySelector('.setup-submit');
 var coatColors = [
   'rgb(101, 137, 164)',
   'rgb(241, 43, 107)',
@@ -26,17 +27,71 @@ var fireballColors = [
   '#5ce6c0',
   '#e848d5',
   '#e6e848'];
+var ENTER_KEY_CODE = 13;
+var ESC_KEY_CODE = 27;
 
-// показываем и прячем окошко setup по клику на иконку и крестик соответственно
-toggleSetup(setupOpen, 'remove');
-toggleSetup(setupClose, 'add');
-
-// элементу навешиваем и убираем класс .invisible
-function toggleSetup(element, action) {
-  element.addEventListener('click', function () {
-    setup.classList[action]('invisible');
-  });
+// проверяем, было ли нажатие на enter
+function isActivateEvent(evt) {
+  return evt.keyCode === ENTER_KEY_CODE;
 }
+
+// если было нажатие на esc, прячем setup
+function setupKeydownHandler(evt) {
+  if (evt.keyCode === ESC_KEY_CODE) {
+    hideSetup();
+  }
+}
+
+// показываем setup, убирая класс invisible
+function showSetup() {
+  setup.classList.remove('invisible');
+  document.addEventListener('keydown', setupKeydownHandler);
+}
+
+// прячем setup, добавляя класс invisible, и перестаем слушать нажатия на esc
+function hideSetup() {
+  setup.classList.add('invisible');
+  document.removeEventListener('keydown', setupKeydownHandler);
+}
+
+// переключаем атрибут aria-pressed
+function togglePressed() {
+  var pressed = (setupOpen.getAttribute('aria-pressed') === 'true');
+  setupOpen.setAttribute('aria-pressed', !pressed);
+}
+
+// показываем setup по клику на иконку
+setupOpen.addEventListener('click', function (evt) {
+  showSetup();
+  togglePressed();
+});
+
+// показываем setup по нажатию Enter, если фокус на иконке
+setupOpen.addEventListener('keydown', function (evt) {
+  if (isActivateEvent(evt)) {
+    showSetup();
+    togglePressed();
+  }
+});
+
+// прячем setup по клику на крестик
+setupClose.addEventListener('click', function () {
+  hideSetup();
+});
+
+// прячем setup по нажатию Enter, если фокус на крестике
+setupClose.addEventListener('keydown', function (evt) {
+  if (isActivateEvent(evt)) {
+    hideSetup();
+  }
+});
+
+// прячем setup по нажатию на Enter, если фокус на кнопке сохранить
+setupSubmit.addEventListener('keydown', function (evt) {
+  if (isActivateEvent(evt)) {
+    hideSetup();
+  }
+});
 
 // делаем поле с именем обязательным и ограничиваем длину
 nameField.required = true;
