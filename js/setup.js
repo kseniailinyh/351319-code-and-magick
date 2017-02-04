@@ -2,11 +2,13 @@
 
 var setup = document.querySelector('.setup');
 var setupOpen = document.querySelector('.setup-open');
+var setupOpenIcon = setupOpen.querySelector('.setup-open-icon');
 var setupClose = setup.querySelector('.setup-close');
 var nameField = setup.querySelector('.setup-user-name');
 var wizardCoat = setup.querySelector('#wizard-coat');
 var wizardEyes = setup.querySelector('#wizard-eyes');
 var fireballWrap = setup.querySelector('.setup-fireball-wrap');
+var setupSubmit = setup.querySelector('.setup-submit');
 var coatColors = [
   'rgb(101, 137, 164)',
   'rgb(241, 43, 107)',
@@ -26,17 +28,71 @@ var fireballColors = [
   '#5ce6c0',
   '#e848d5',
   '#e6e848'];
+var ENTER_KEY_CODE = 13;
+var ESC_KEY_CODE = 27;
 
-// показываем и прячем окошко setup по клику на иконку и крестик соответственно
-toggleSetup(setupOpen, 'remove');
-toggleSetup(setupClose, 'add');
-
-// элементу навешиваем и убираем класс .invisible
-function toggleSetup(element, action) {
-  element.addEventListener('click', function () {
-    setup.classList[action]('invisible');
-  });
+// проверяем, было ли нажатие на enter
+function isEnterEvent(evt) {
+  return evt.keyCode === ENTER_KEY_CODE;
 }
+
+// если было нажатие на esc, прячем setup
+function setupKeydownHandler(evt) {
+  if (evt.keyCode === ESC_KEY_CODE) {
+    hideSetup();
+  }
+}
+
+// показываем setup, убирая класс invisible
+function showSetup() {
+  setup.classList.remove('invisible');
+  document.addEventListener('keydown', setupKeydownHandler);
+  togglePressed();
+}
+
+// прячем setup, добавляя класс invisible, и перестаем слушать нажатия на esc
+function hideSetup() {
+  setup.classList.add('invisible');
+  document.removeEventListener('keydown', setupKeydownHandler);
+  togglePressed();
+}
+
+// переключаем атрибут aria-pressed
+function togglePressed() {
+  var pressed = (setupOpenIcon.getAttribute('aria-pressed') === 'true');
+  setupOpenIcon.setAttribute('aria-pressed', !pressed);
+}
+
+// показываем setup по клику на иконку
+setupOpen.addEventListener('click', function (evt) {
+  showSetup();
+});
+
+// показываем setup по нажатию Enter, если фокус на иконке
+setupOpen.addEventListener('keydown', function (evt) {
+  if (isEnterEvent(evt)) {
+    showSetup();
+  }
+});
+
+// прячем setup по клику на крестик
+setupClose.addEventListener('click', function () {
+  hideSetup();
+});
+
+// прячем setup по нажатию Enter, если фокус на крестике
+setupClose.addEventListener('keydown', function (evt) {
+  if (isEnterEvent(evt)) {
+    hideSetup();
+  }
+});
+
+// прячем setup по нажатию на Enter, если фокус на кнопке сохранить
+setupSubmit.addEventListener('keydown', function (evt) {
+  if (isEnterEvent(evt)) {
+    hideSetup();
+  }
+});
 
 // делаем поле с именем обязательным и ограничиваем длину
 nameField.required = true;
