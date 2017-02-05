@@ -23,11 +23,11 @@ var eyesColors = [
   'yellow',
   'green'];
 var fireballColors = [
-  '#ee4830',
-  '#30a8ee',
-  '#5ce6c0',
-  '#e848d5',
-  '#e6e848'];
+  'aquamarine',
+  'slateblue',
+  'chocolate',
+  'coral',
+  'skyblue'];
 var ENTER_KEY_CODE = 13;
 var ESC_KEY_CODE = 27;
 
@@ -98,22 +98,7 @@ setupSubmit.addEventListener('keydown', function (evt) {
 nameField.required = true;
 nameField.maxLength = 50;
 
-// навешиваем событие изменения цвета заливки по клику для мантии, глаз и фаербола
-changeColor(wizardCoat, 'fill', coatColors);
-changeColor(wizardEyes, 'fill', eyesColors);
-changeColor(fireballWrap, 'background', fireballColors);
-
-// навешиваем событие изменения цвета элемента по клику
-function changeColor(element, attribute, colorArray) {
-  element.addEventListener('click', function () {
-    var rand = getRandomPosition(colorArray);
-    var color = colorArray[rand];
-    element.style[attribute] = color;
-  });
-}
-
-// определяем случайный элемент массива
-function getRandomPosition(array) {
-  var rand = (Math.random() * (array.length - 1)).toFixed(0);
-  return rand;
-}
+// меняем цвет заливки мантии, глаз и фаербола
+window.colorizeElement(wizardCoat, coatColors, 'fill');
+window.colorizeElement(wizardEyes, eyesColors, 'fill');
+window.colorizeElement(fireballWrap, fireballColors, 'background');
